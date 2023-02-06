@@ -54,22 +54,31 @@ int simulate(int** world, int world_size){
 
 int main(){
 
+  int spawnchance=50;
+
   cout << "The Game of Life" << endl;
   cout << "Input a world size: ";
   cin >> world_size;
+  cout << "Input a spawn chance for a living cell in % (int: 0-100): ";
+  cin >> spawnchance;
   cout << "Choose a delay in microseconds(100000 recommended): ";
   cin >> delay;
 
   int world[world_size][world_size];
-
-  // Build an array of pointers to rows.
   int *px[world_size];
   for (int i = 0; i < world_size; i++)
       px[i] = world[i];
 
+  int randNum;
   for (int i = 0; i < world_size; i++) {
         for (int j = 0; j < world_size; j++) {
-            world[i][j] = rand() % 2;
+          randNum = rand() % 100;
+          if(randNum<=spawnchance){
+            world[i][j] = 1;
+          }else {
+            world[i][j] = 0;
+          }
+
         }
     }
 
