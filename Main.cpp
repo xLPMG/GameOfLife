@@ -4,10 +4,9 @@
 
 using namespace std;
 
-int world_size=0;
 int delay=100000;
 
-int getLivingNeighborsCount(int** world, int world_size, int x, int y)
+int getLivingNeighborsCount(int** world, int world_size_x, int world_size_y, int x, int y)
 {
     int count = 0;
     int cX, cY;
@@ -15,7 +14,7 @@ int getLivingNeighborsCount(int** world, int world_size, int x, int y)
           for (int j = -1; j < 2; j++) {
             cX = x+i;
             cY = y+j;
-            if(!(i==0 && j==0) && cX>=0 && cY >= 0 && cX < world_size && cY < world_size ){
+            if(!(i==0 && j==0) && cX>=0 && cY >= 0 && cX < world_size_y && cY < world_size_x ){
               if(world[cX][cY] == 1){
                   count++;
               }
@@ -25,25 +24,24 @@ int getLivingNeighborsCount(int** world, int world_size, int x, int y)
     return count;
 }
 
-int simulate(int** world, int world_size){
+int simulate(int** world, int world_size_x, int world_size_y){
   int steps=0;
 
   //create copy of array as workspace
-  int worldCopy[world_size][world_size];
-  int *pxCopy[world_size];
-  for (int i = 0; i < world_size; i++){
-      pxCopy[i] = worldCopy[i];
-    }
-  for (int i=0 ; i < world_size; i++) {
-    for (int j=0 ; j < world_size; j++) {
+  int **worldCopy = new int*[world_size_y];
+  for (int i = 0; i < world_size_y; i++){
+      worldCopy[i] = new int[world_size_x];
+  }
+
+  for (int i=0 ; i < world_size_y; i++) {
+    for (int j=0 ; j < world_size_x; j++) {
       worldCopy[i][j] = world[i][j];
     }
   }
-
   while(true){
-    for(int i=0;i<world_size;i++){
-      for(int j=0;j<world_size;j++){
-        int livingNeighbors = getLivingNeighborsCount(world, world_size, i, j);
+    for(int i=0;i<world_size_y;i++){
+      for(int j=0;j<world_size_x;j++){
+        int livingNeighbors = getLivingNeighborsCount(world, world_size_x, world_size_y, i, j);
         //make changes only on copy
         if (world[i][j] == 1 && (livingNeighbors == 2 || livingNeighbors == 3)) {
                 worldCopy[i][j] = 1;
@@ -60,12 +58,12 @@ int simulate(int** world, int world_size){
     }
     cout << "step: " << steps << endl;
     steps++;
-    for(int i=0;i<world_size+1;i++){
+    for(int i=0;i<world_size_y+1;i++){
       cout << "\x1b[A";
     }
     //apply changes to real array
-    for (int i=0 ; i < world_size; i++) {
-      for (int j=0 ; j < world_size; j++) {
+    for (int i=0 ; i < world_size_y; i++) {
+      for (int j=0 ; j < world_size_x; j++) {
         world[i][j] = worldCopy[i][j];
       }
     }
@@ -76,6 +74,9 @@ int simulate(int** world, int world_size){
 }
 
 int main(){
+
+  int world_size_x=0;
+  int world_size_y=0;
 
   int spawnchance=50;
   bool useFile = false;
@@ -88,8 +89,10 @@ int main(){
 
   if(response=="n"){
   useFile=false;
-  cout << "Input a world size: ";
-  cin >> world_size;
+  cout << "Input a world size (width): ";
+  cin >> world_size_x;
+  cout << "Input a world size (height): ";
+  cin >> world_size_y;
   cout << "Input a spawn chance for a living cell in % (int: 0-100): ";
   cin >> spawnchance;
 }else if(response=="y"){
@@ -104,17 +107,17 @@ int main(){
 
 if(!useFile){
   //set up world
-  int world[world_size][world_size];
-  int *px[world_size];
-  for (int i = 0; i < world_size; i++){
-      px[i] = world[i];
-}
+  int **world = new int*[world_size_y];
+  for (int i = 0; i < world_size_y; i++){
+      world[i] = new int[world_size_x];
+  }
 
   cout << "Generating starting pattern based on spawn chance:" << endl;
   //fill world randomly (using given chance)
   int randNum;
-  for (int i = 0; i < world_size; i++) {
-        for (int j = 0; j < world_size; j++) {
+  // i = rows, j = columns
+  for (int i = 0; i < world_size_y; i++) {
+        for (int j = 0; j < world_size_x; j++) {
           randNum = rand() % 100;
           if(randNum<=spawnchance){
             world[i][j] = 1;
@@ -128,7 +131,7 @@ if(!useFile){
         cout << endl;
     }
     cout << "Starting simulation:" << endl;
-    simulate(px, world_size);
+    simulate(world, world_size_x, world_size_y);
   } else {
   //read file
   ifstream inFile;
@@ -140,19 +143,19 @@ if(!useFile){
       //read data size as first two parameters
       inFile >> data_size_x;
       inFile >> data_size_y;
-      //read world size as third parameter
-      inFile >> world_size;
+      //read world size as third and fourth parameter
+      inFile >> world_size_x;
+      inFile >> world_size_y;
 
       //set up world
-      int world[world_size][world_size];
-      int *px[world_size];
-      for (int i = 0; i < world_size; i++){
-          px[i] = world[i];
-        }
+      int **world = new int*[world_size_y];
+      for (int i = 0; i < world_size_y; i++){
+          world[i] = new int[world_size_x];
+      }
       //read file data into world
       cout << "Reading data from file:" << endl;
-        for (int i = 0; i < world_size; i++) {
-              for (int j = 0; j < world_size; j++) {
+        for (int i = 0; i < world_size_y; i++) {
+              for (int j = 0; j < world_size_x; j++) {
                 if( i < data_size_y && j < data_size_x ) {
                   inFile >> world[i][j];
                   if(world[i][j]==1){
@@ -165,11 +168,13 @@ if(!useFile){
                   cout << " ";
                 }
               }
+
               cout << endl;
+
           }
         inFile.close();
         cout << "Starting simulation:" << endl;
-        simulate(px, world_size);
+        simulate(world, world_size_x, world_size_y);
     } else {
         cerr << "Can't find input file " << inFileName << endl;
         return 1;
