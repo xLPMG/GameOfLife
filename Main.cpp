@@ -104,10 +104,14 @@ if(!useFile){
   } else {
   //read file
   ifstream inFile;
+  int data_size;
+
   inFile.open(inFileName.c_str());
     if (inFile.is_open())
     {
-      //read world size in first line
+      //read data size as first parameter
+      inFile >> data_size;
+      //read world size as second parameter
       inFile >> world_size;
 
       //set up world
@@ -117,11 +121,16 @@ if(!useFile){
           px[i] = world[i];
         }
       //read file data into world
-      for (int i = 0; i < world_size; i++) {
-            for (int j = 0; j < world_size; j++) {
-                inFile >> world[i][j];
-            }
-        }
+
+        for (int i = 0; i < world_size; i++) {
+              for (int j = 0; j < world_size; j++) {
+                if( i < data_size && j < data_size ) {
+                  inFile >> world[i][j];
+                } else {
+                  world[i][j] = 0;
+                }
+              }
+          }
         inFile.close();
         simulate(px, world_size);
     } else {
