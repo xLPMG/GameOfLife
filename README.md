@@ -9,8 +9,8 @@ Go to /build and run Life_Simulator file
 
 ## Data file usage
 
-You can use text files as input. They need to have the following structure:
-
+You can use text files as input. They need to have the following structure:<br>
+--------------------------------------------<br>
 [data_size_x] [data_size_y] [world_size]<br>
 [x0,0] [x0,1] [x0,2] ... [x0,data_size_x-1]<br>
 [x1,0] [x1,1]<br>
@@ -18,8 +18,8 @@ You can use text files as input. They need to have the following structure:
    .<br> 
    .<br>
    .<br>
-[xdata_size_y-1,0]
-
+[xdata_size_y-1,0]<br>
+--------------------------------------------<br>
 The values do not have to be formatted and are only separated by spaces. For example the matrix structure above can be written as: <br>
 [data_size] [world_size] [x0,0] [x0,1] [x0,2] ... [x0,data_size-1] [x1,0] [x1,1] ... [x1,0] [x1,1] ... [x1,data_size-1] ......
 
