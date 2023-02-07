@@ -27,5 +27,5 @@ The values do not have to be formatted and are only separated by spaces. For exa
 **[world_size]** can be much larger (>=data_size) and specifies the size of the area, where the Game Of Life will be simulated in. Every "field" in the world which lies outside of the specified matrix is set to 0.<br>
 Every matrix entry is either 0 (dead cell) or 1 (live cell).<br>
 
-Example files can be found in `/configs`
+Example files can be found in `/configs` <br>
 Config files need to be in the same directory as the Life_Simulator file (likely `/build`) as path specification does not work (yet).
