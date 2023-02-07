@@ -28,3 +28,4 @@ The values do not have to be formatted and are only separated by spaces. For exa
 Every matrix entry is either 0 (dead cell) or 1 (live cell).<br>
 
 Example files can be found in `/configs`
+Config files need to be in the same directory as the Life_Simulator file (likely `/build`) as path specification does not work (yet).
