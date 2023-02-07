@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <fstream>
 
 using namespace std;
 
@@ -55,20 +56,38 @@ int simulate(int** world, int world_size){
 int main(){
 
   int spawnchance=50;
+  bool useFile = false;
+  string response="";
+  string inFileName = "example.dat";
 
   cout << "The Game of Life" << endl;
+  cout << "Use a config file? (y/n): ";
+  cin >> response;
+
+  if(response=="n"){
+  useFile=false;
   cout << "Input a world size: ";
   cin >> world_size;
   cout << "Input a spawn chance for a living cell in % (int: 0-100): ";
   cin >> spawnchance;
+}else if(response=="y"){
+  useFile=true;
+  cout << "Provide a file name: ";
+  cin >> inFileName;
+}else{
+  return 0;
+}
   cout << "Choose a delay in microseconds(100000 recommended): ";
   cin >> delay;
 
+if(!useFile){
+  //set up world
   int world[world_size][world_size];
   int *px[world_size];
-  for (int i = 0; i < world_size; i++)
+  for (int i = 0; i < world_size; i++){
       px[i] = world[i];
-
+}
+  //fill world randomly (using given chance)
   int randNum;
   for (int i = 0; i < world_size; i++) {
         for (int j = 0; j < world_size; j++) {
@@ -81,8 +100,34 @@ int main(){
 
         }
     }
+    simulate(px, world_size);
+  } else {
+  //read file
+  ifstream inFile;
+  inFile.open(inFileName.c_str());
+    if (inFile.is_open())
+    {
+      //read world size in first line
+      inFile >> world_size;
 
-  simulate(px, world_size);
-
+      //set up world
+      int world[world_size][world_size];
+      int *px[world_size];
+      for (int i = 0; i < world_size; i++){
+          px[i] = world[i];
+        }
+      //read file data into world
+      for (int i = 0; i < world_size; i++) {
+            for (int j = 0; j < world_size; j++) {
+                inFile >> world[i][j];
+            }
+        }
+        inFile.close();
+        simulate(px, world_size);
+    } else {
+        cerr << "Can't find input file " << inFileName << endl;
+        return 1;
+    }
+  }
   return 0;
 }
