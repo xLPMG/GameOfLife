@@ -11,7 +11,7 @@ Go to /build and run Life_Simulator file
 
 You can use text files as input. They need to have the following structure:<br>
 --------------------------------------------<br>
-[data_size_x] [data_size_y] [world_size]<br>
+[data_size_x] [data_size_y] [world_size_x] [world_size_y]<br>
 [x0,0] [x0,1] [x0,2] ... [x0,data_size_x-1]<br>
 [x1,0] [x1,1]<br>
 [x2,0]<br>
@@ -27,7 +27,10 @@ The values do not have to be formatted and are only separated by spaces. For exa
 Every matrix entry is either 0 (dead cell) or 1 (live cell).<br>
 **[data_size_x]** is an integer and specifies how many columns of data the input matrix has (for reading purposes).<br>
 **[data_size_y]** is an integer and specifies how many rows of data the input matrix has (for reading purposes).<br>
-**[world_size]** can be much larger (>=data_size) and specifies the size of the area (input n for a n*n square for simplicity), where the Game Of Life will be simulated in. Every "field" in the world which lies outside of the specified matrix is set to 0.<br>
+**[world_size]** can be much larger (>=data_size) and specifies the size of the area, where the Game Of Life will be simulated in. Every "field" in the world which lies outside of the specified matrix is set to 0.<br>
+**[world_size_x]** width of the world (integer).<br>
+**[world_size_y]** height of the world (integer).<br>
+
 
 Example files can be found in `/configs` <br>
 Config files need to be in the same directory as the Life_Simulator file (likely `/build`) as path specification does not work (yet).
