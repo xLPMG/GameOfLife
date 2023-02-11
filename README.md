@@ -2,6 +2,14 @@
 
 My implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) in C++
 
+## Demo
+Random distribution example:
+<img width="1242" alt="random_sim" src="https://user-images.githubusercontent.com/17238289/218282695-5496bbfa-3478-48d0-8fa0-462f37600db3.png">
+[LWSS Example:](https://conwaylife.com/wiki/Lightweight_spaceship)
+<img width="1242" alt="lwss" src="https://user-images.githubusercontent.com/17238289/218282694-20070fb1-3f4d-4a4e-bd58-6ffdb3b4a948.png">
+
+
+
 ## Deployment
 
 Build with CMake (version 3.25.2 or newer) <br>
